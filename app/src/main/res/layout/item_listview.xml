@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="6sp"
+        >
+    <ImageView
+        android:id="@+id/hinhanh_item_lv"
+        android:layout_width="81dp"
+        android:layout_height="81dp"
+        app:srcCompat="@drawable/chothuenha" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="224dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:layout_marginLeft="94dp"
+        android:orientation="vertical"
+        android:paddingTop="6sp"
+        android:paddingBottom="6sp">
+
+        <TextView
+            android:id="@+id/tieude_itemlv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6sp"
+            android:text="Luong cong ty"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ghichu_itemlv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6sp"
+            android:text="aaaaaaaaaaaa"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/ngaythang_itemlv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6sp"
+            android:text="aaaaaaaaaaaa" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="94dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:paddingTop="6sp"
+        android:paddingBottom="6sp">
+
+        <ImageView
+            android:id="@+id/edit_itemlv"
+            android:layout_width="59dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8sp"
+            app:srcCompat="@drawable/edit" />
+
+        <TextView
+            android:id="@+id/giatien_itemlv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="9sp"
+            android:padding="2sp"
+            android:text="300.000.000"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+</FrameLayout>

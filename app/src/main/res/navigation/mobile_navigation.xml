@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_Tongquan">
+
+    <fragment
+        android:id="@+id/nav_Thunhap"
+        android:name="huuphu.aprotrain.quanlychitieu2.ui.ThunhapFragment"
+        android:label="Thu nhập"
+        tools:layout="@layout/fragment_thunhap" />
+
+    <fragment
+        android:id="@+id/nav_Chitieu"
+        android:name="huuphu.aprotrain.quanlychitieu2.ui.ChitieuFragment"
+        android:label="Chi tiêu"
+        tools:layout="@layout/fragment_chitieu" />
+
+    <fragment
+        android:id="@+id/nav_Thongke"
+        android:name="huuphu.aprotrain.quanlychitieu2.ui.ThongkeFragment"
+        android:label="Thống kê"
+        tools:layout="@layout/fragment_thongke" />
+
+    <fragment
+        android:id="@+id/nav_Tongquan"
+        android:name="huuphu.aprotrain.quanlychitieu2.ui.TongquanFragment"
+        android:label="Tổng quan"
+        tools:layout="@layout/fragment_tatca" />
+</navigation>

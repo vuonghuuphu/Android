@@ -1,0 +1,232 @@
+package huuphu.aprotrain.quanlychitieu2.ui
+
+import android.content.Context
+import android.database.Cursor
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import huuphu.aprotrain.quanlychitieu2.Chitieu_mdf
+import huuphu.aprotrain.quanlychitieu2.R
+import huuphu.aprotrain.quanlychitieu2.Spinner.data_Spinnerchitieu
+import huuphu.aprotrain.quanlychitieu2.Spinner.data_Spinnerthunhap
+import huuphu.aprotrain.quanlychitieu2.tadlayout_thongke.thongke
+import huuphu.aprotrain.quanlychitieu2.tadlayout_thongke.thunhap_adapter
+import kotlinx.android.synthetic.main.fragment_tatca.*
+import kotlinx.android.synthetic.main.fragment_tk_chitieu.*
+import kotlinx.android.synthetic.main.fragment_tk_thunhap.*
+import java.util.*
+import kotlin.collections.ArrayList
+
+
+class TongquanFragment : Fragment() {
+    val cal : Calendar = Calendar.getInstance()
+    var nam : Int = (cal.get(Calendar.YEAR))
+    var thang : Int = (cal.get(Calendar.MONTH)+1)
+    var arraythongke : ArrayList<thongke> = ArrayList()
+    var pieList: ArrayList<PieEntry> = ArrayList()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        val view : View = inflater.inflate(R.layout.fragment_tatca,container,false)
+        val piechar : PieChart = view.findViewById(R.id.pieChartall)
+        val spinnerthang : Spinner = view.findViewById(R.id.sp_all_thang)
+        val spinnernam : Spinner = view.findViewById(R.id.sp_all_nam)
+        val array_thang_tn : ArrayList<Int> = ArrayList()
+        val array_nam_tn : ArrayList<Int> = ArrayList()
+
+        pieList.add(PieEntry(1f,"Tổng quan"))
+        initPieChart(piechar)
+        bieudo(pieList,piechar)
+
+        for (j in 2018 .. nam + 10){
+            array_nam_tn.add(j)
+        }
+        for (i in 1 .. 12 ){
+            array_thang_tn.add(i)
+        }
+        val adapterthang: ArrayAdapter<Int> = ArrayAdapter<Int>(requireContext(), android.R.layout.simple_spinner_item, array_thang_tn)
+        val adapternam: ArrayAdapter<Int> = ArrayAdapter<Int>(requireContext(), android.R.layout.simple_spinner_item, array_nam_tn)
+        adapterthang.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
+        adapternam.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
+        spinnerthang.adapter = adapterthang
+        spinnernam.adapter = adapternam
+        if (thang != null) {
+            val spinnerPosition_t: Int = adapterthang.getPosition(thang)
+            spinnerthang.setSelection(spinnerPosition_t)
+        }
+        if (nam != null) {
+            val spinnerPosition_n: Int = adapternam.getPosition(nam)
+            spinnernam.setSelection(spinnerPosition_n)
+        }
+        spinnerthang.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View, position: Int, id: Long) {
+                arraythongke.clear()
+                pieList.clear()
+                var tong = 0
+                var sodu=0
+                    val sql =" select Tien from THUNHAP where THUNHAP.Date like '%/_${array_thang_tn[spinnerthang.selectedItemPosition]}/${array_nam_tn[spinnernam.selectedItemPosition]}'"
+                    val cursor : Cursor = Chitieu_mdf().findall_tk(sql)!!
+                    while (cursor.moveToNext()){
+                        val tien_db = cursor.getInt(0)
+                        tong += tien_db
+                    }
+                        val tk = thongke("Thu nhập",tong,0)
+                        arraythongke.add(tk)
+                    var tongct = 0
+                    val sql1 =" select Tien from CHITIEU where CHITIEU.Date like '%/_${array_thang_tn[spinnerthang.selectedItemPosition]}/${array_nam_tn[spinnernam.selectedItemPosition]}'"
+                    val cursorct : Cursor = Chitieu_mdf().findall_tk(sql1)!!
+                    while (cursorct.moveToNext()){
+                        val tien_db = cursorct.getInt(0)
+                        tongct += tien_db
+                    }
+                    val ct = thongke("Chi tiêu",tongct,0)
+                    arraythongke.add(ct)
+
+                    sodu = tong - tongct
+                    val addsodu = thongke("Số dư",sodu,1)
+                    arraythongke.add(addsodu)
+                lv_all.adapter = thunhap_adapter(context!!,R.layout.item_lv_thongke,arraythongke)
+                if (sodu < 0){
+                    pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+                }else{
+                pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+                pieList.add(PieEntry(sodu.toFloat(),"Số tiền còn lại"))}
+                initPieChart(piechar)
+                bieudo(pieList,piechar)
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+            }
+        })
+
+        spinnernam.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View, position: Int, id: Long) {
+                arraythongke.clear()
+                pieList.clear()
+                var tong = 0
+                var sodu=0
+                val sql =" select Tien from THUNHAP where THUNHAP.Date like '%/_${array_thang_tn[spinnerthang.selectedItemPosition]}/${array_nam_tn[spinnernam.selectedItemPosition]}'"
+                val cursor : Cursor = Chitieu_mdf().findall_tk(sql)!!
+                while (cursor.moveToNext()){
+                    val tien_db = cursor.getInt(0)
+                    tong += tien_db
+                }
+                val tk = thongke("Thu nhập",tong,0)
+                arraythongke.add(tk)
+                var tongct = 0
+                val sql1 =" select Tien from CHITIEU where CHITIEU.Date like '%/_${array_thang_tn[spinnerthang.selectedItemPosition]}/${array_nam_tn[spinnernam.selectedItemPosition]}'"
+                val cursorct : Cursor = Chitieu_mdf().findall_tk(sql1)!!
+                while (cursorct.moveToNext()){
+                    val tien_db = cursorct.getInt(0)
+                    tongct += tien_db
+                }
+                val ct = thongke("Chi tiêu",tongct,0)
+                arraythongke.add(ct)
+                sodu = tong - tongct
+                val addsodu = thongke("Số dư",sodu,1)
+                arraythongke.add(addsodu)
+                lv_all.adapter = thunhap_adapter(context!!,R.layout.item_lv_thongke,arraythongke)
+                if (sodu < 0){
+                    pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+                }else{
+                    pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+                    pieList.add(PieEntry(sodu.toFloat(),"Số tiền còn lại"))}
+                initPieChart(piechar)
+                bieudo(pieList,piechar)
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+            }
+        })
+
+        return view;
+    }
+    fun loadall (context : Context, lv : ListView, piechar: PieChart){
+        arraythongke.clear()
+        pieList.clear()
+        var tong = 0
+        var sodu=0
+        val sql =" select Tien from THUNHAP where THUNHAP.Date like '%/_${thang}/${nam}'"
+        val cursor : Cursor = Chitieu_mdf().findall_tk(sql)!!
+        while (cursor.moveToNext()){
+            val tien_db = cursor.getInt(0)
+            tong += tien_db
+        }
+        val tk = thongke("Thu nhập",tong,0)
+        arraythongke.add(tk)
+        var tongct = 0
+        val sql1 =" select Tien from CHITIEU where CHITIEU.Date like '%/_${thang}/${nam}'"
+        val cursorct : Cursor = Chitieu_mdf().findall_tk(sql1)!!
+        while (cursorct.moveToNext()){
+            val tien_db = cursorct.getInt(0)
+            tongct += tien_db
+        }
+        val ct = thongke("Chi tiêu",tongct,0)
+        arraythongke.add(ct)
+        sodu = tong - tongct
+        val addsodu = thongke("Số dư",sodu,1)
+        arraythongke.add(addsodu)
+        lv.adapter = thunhap_adapter(context,R.layout.item_lv_thongke,arraythongke)
+        if (sodu < 0){
+            pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+        }else{
+            pieList.add(PieEntry(tongct.toFloat(),"Số tiền đã tiêu"))
+            pieList.add(PieEntry(sodu.toFloat(),"Số tiền còn lại"))}
+        initPieChart(piechar)
+        bieudo(pieList,piechar)
+    }
+    fun initPieChart(piechar : PieChart) {
+        piechar.setUsePercentValues(true)
+        piechar.description.text = ""
+        piechar.isDrawHoleEnabled = false
+        piechar.setTouchEnabled(true)
+        piechar.setDrawEntryLabels(false)
+        piechar.setExtraOffsets(20f, 0f, 20f, 20f)
+        piechar.setUsePercentValues(true)
+        piechar.isRotationEnabled = false
+        piechar.setDrawEntryLabels(false)
+        piechar.legend.orientation = Legend.LegendOrientation.VERTICAL
+        piechar.legend.isWordWrapEnabled = true
+
+    }
+    fun bieudo(pieList: ArrayList<PieEntry>, piechar : PieChart){
+        val piedata : PieData
+        piechar.setUsePercentValues(true)
+        val arrcolor = ArrayList<Int>()
+        arrcolor.add(Color.GREEN)
+        arrcolor.add(Color.RED)
+        arrcolor.add(Color.MAGENTA)
+        arrcolor.add(Color.LTGRAY)
+        arrcolor.add(Color.YELLOW)
+        arrcolor.add(Color.BLUE)
+        arrcolor.add(Color.TRANSPARENT)
+        arrcolor.add(Color.CYAN)
+        val pieDataSet = PieDataSet(pieList,"")
+        pieDataSet.sliceSpace = 2f
+        pieDataSet.setValueFormatter(PercentFormatter())
+        pieDataSet.valueTextSize = 16f
+        pieDataSet.setValueTextColor(Color.BLACK)
+        pieDataSet.colors = arrcolor
+        piedata = PieData(pieDataSet)
+        piechar.animateY(1500)
+        piechar.transparentCircleRadius = 61f
+        piechar.holeRadius = 58f
+        piechar.isDrawHoleEnabled = true
+        piechar.setHoleColor(Color.WHITE)
+        val legend : Legend? = piechar.legend
+        legend!!.textSize = 16f
+        piechar.data = piedata
+        piechar.invalidate()
+    }
+}
+

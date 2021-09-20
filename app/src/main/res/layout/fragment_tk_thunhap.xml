@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="90sp"
+    >
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20sp"
+        >
+        <Spinner
+            android:id="@+id/sp_tk_thang"
+            android:layout_marginRight="40sp"
+            android:layout_width="156dp"
+            android:layout_height="30dp"/>
+        <Spinner
+            android:id="@+id/sp_tn_nam"
+            android:layout_width="156dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartthunhaptk"
+        android:layout_width="match_parent"
+        android:layout_height="384dp"
+        android:background="@color/white" />
+    <LinearLayout
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#5FAC05"
+            >
+            <TextView
+                android:layout_margin="6sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi tiết thu nhập"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_tkthunhap"
+            android:layout_width="match_parent"
+            android:layout_height="1021dp"
+
+            />
+
+    </LinearLayout>
+</LinearLayout></ScrollView>

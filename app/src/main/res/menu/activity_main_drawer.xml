@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_Tongquan"
+            android:icon="@drawable/ic_menu_tracuu"
+            android:title="Tổng quan"
+            app:showAsAction="ifRoom"
+            />
+        <item
+        android:id="@+id/nav_Thongke"
+        android:icon="@drawable/ic_menu_thongke"
+        android:title="@string/menu_Thongke"
+        app:showAsAction="ifRoom"
+        />
+        <item
+            android:id="@+id/nav_Thunhap"
+            android:icon="@drawable/ic_menu_thunhap"
+            android:title="@string/menu_Thunhap"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/nav_Chitieu"
+            android:icon="@drawable/ic_menu_chitieu"
+            android:title="@string/menu_Chitieu"
+            app:showAsAction="ifRoom"
+            />
+
+
+    </group>
+</menu>
